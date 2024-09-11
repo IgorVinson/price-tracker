@@ -1,13 +1,28 @@
 "use client";
 import React from "react";
 import { scrapeAndStoreProduct } from "@/lib/action";
+import useProductStore from "@/lib/store";
+import DialogWindow from "@/components/DialogWindow";
+import Spinner from "@/components/Spinner";
 
 function Searchbar() {
     const [inputValue, setInputValue] = React.useState("");
-    console.log(inputValue);
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const [isOpen, setIsOpen] = React.useState(false);
+    const [loading, setLoading] = React.useState(false);
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        scrapeAndStoreProduct(String(inputValue));
+        setLoading(true);
+
+        try {
+            const product = await scrapeAndStoreProduct(String(inputValue));
+            useProductStore.getState().addProduct(product!);
+            setIsOpen(true);
+        } catch (error) {
+            console.error("Error fetching product", error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -22,7 +37,9 @@ function Searchbar() {
 
             <button className="searchbar-btn" type="submit">
                 Search
+                {loading && <Spinner />}
             </button>
+            <DialogWindow isOpen={isOpen} onClose={() => setIsOpen(false)} />
         </form>
     );
 }
