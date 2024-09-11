@@ -29,7 +29,7 @@ function Searchbar() {
         <form className="flex flex-wrap gap-4 mt-12" onSubmit={handleSubmit}>
             <input
                 type="text"
-                className="searchbar-input"
+                className="searchbar-input border-2 border-gray-900 rounded-lg px-4 py-2 w-full"
                 placeholder="Enter a product link"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}

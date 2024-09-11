@@ -4,11 +4,13 @@ import { Product } from "@/types";
 // Define the State type
 type ProductState = {
     products: Product[];
+    savedProducts: Product[]; // Added savedProducts array to the state
 };
 
 // Define the Actions type
 type ProductActions = {
     addProduct: (product: Product) => void;
+    saveProduct: (product: Product) => void; // Action to save a product
     clearProducts: () => void;
     updateProductPrice: (productId: string, newPrice: number) => void;
 };
@@ -16,11 +18,18 @@ type ProductActions = {
 // Create the Zustand store
 const useProductStore = create<ProductState & ProductActions>((set) => ({
     products: [],
+    savedProducts: [],
 
-    // Action to add a product
+    // Action to add a product to the product list
     addProduct: (product) =>
         set((state) => ({
             products: [...state.products, product],
+        })),
+
+    // Action to save a product to savedProducts array
+    saveProduct: (product) =>
+        set((state) => ({
+            savedProducts: [...state.savedProducts, product],
         })),
 
     // Action to clear all products
