@@ -10,8 +10,17 @@ export default function DialogWindow({
     isOpen: boolean;
     onClose: () => void;
 }) {
-    const product = useProductStore((state) => state.products[0]);
-    console.log(product);
+    const products = useProductStore((state) => state.products);
+    const product = products[products.length - 1];
+    const saveProduct = useProductStore((state) => state.saveProduct);
+
+    const handleSave = () => {
+        if (product) {
+            saveProduct(product); // Save the product to the store
+            onClose(); // Close the dialog after saving
+        }
+    };
+
     return (
         <Dialog.Root open={isOpen} onOpenChange={onClose}>
             <Dialog.Portal>
@@ -22,7 +31,7 @@ export default function DialogWindow({
                     </Dialog.Title>
 
                     <img
-                        className="w-full h-[200px] object-cover mt-6 rounded-[6px] object-contain"
+                        className="w-full h-[200px] mt-6 rounded-[6px] object-contain"
                         src={product?.image}
                         alt={product?.title}
                     />
@@ -55,7 +64,10 @@ export default function DialogWindow({
 
                     <div className="mt-[25px] flex justify-end">
                         <Dialog.Close asChild>
-                            <button className="bg-primary-green text-white-100 hover:bg-green focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none">
+                            <button
+                                className="bg-primary-green text-white-100 hover:bg-green focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none"
+                                onClick={handleSave}
+                            >
                                 Save changes
                             </button>
                         </Dialog.Close>
@@ -73,35 +85,3 @@ export default function DialogWindow({
         </Dialog.Root>
     );
 }
-
-
-// import * as Dialog from "@radix-ui/react-dialog";
-//
-// const DialogComponent = ({
-//     isOpen,
-//     onClose,
-// }: {
-//     isOpen: boolean;
-//     onClose: () => void;
-// }) => {
-//     return (
-//         <Dialog.Root open={isOpen} onOpenChange={onClose}>
-//             <Dialog.Portal>
-//                 <Dialog.Overlay className="dialog-overlay" />
-//                 <Dialog.Content className="dialog-content">
-//                     <Dialog.Title>Product Added</Dialog.Title>
-//                     <Dialog.Description>
-//                         The product has been successfully added to the store.
-//                     </Dialog.Description>
-//                     <Dialog.Close asChild>
-//                         <button className="dialog-close-btn" onClick={onClose}>
-//                             Close
-//                         </button>
-//                     </Dialog.Close>
-//                 </Dialog.Content>
-//             </Dialog.Portal>
-//         </Dialog.Root>
-//     );
-// };
-//
-// export default DialogComponent;

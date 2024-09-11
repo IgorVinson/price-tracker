@@ -1,9 +1,6 @@
 import Image from "next/image";
 import Searchbar from "@/components/Searchbar";
-import Dialog from "@/components/DialogWindow";
-import useProductStore from "@/lib/store";
-// import { getAllProducts } from "@/lib/actions"
-// import ProductCard from "@/components/ProductCard"
+import Table from "@/components/Table";
 
 const Home = async () => {
     return (
@@ -35,6 +32,12 @@ const Home = async () => {
                     </div>
 
                     {/*<HeroCarousel />*/}
+                </div>
+                <div className="mt-8 bg-gray-100 rounded-[20px] p-8">
+                    <h2 className="section-text text-center">
+                        List of yours saved products
+                    </h2>
+                    <Table />
                 </div>
             </section>
         </>
