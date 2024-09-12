@@ -17,9 +17,9 @@
 /* Стилі для контейнера модального вікна */
 .modalContainer {
     width: 50%;
-    max-width: 500px; /* Можна налаштувати за потребою */
+    max-width: 500px;
     height: 70%;
-    max-height: 600px; /* Можна налаштувати за потребою */
+    max-height: 600px;
     background: #ffffff;
     border-radius: 8px;
     box-shadow: 0 0 24px rgba(0, 0, 0, 0.1);
