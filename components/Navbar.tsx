@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Link from "next/link";
 import Image from "next/image";
-import Auth from './Auth';
+import Auth from './Auth/Auth';
 
 const navIcons = [
     {src: '/assets/icons/search.svg', alt: 'search'},
