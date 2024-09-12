@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import styles from './Auth.module.css'; // Імпорт CSS-модуля
 
-const Auth: React.FC = () => {
+interface AuthProps {
+    onClose: () => void; // Додаємо проп для закриття модального вікна
+}
+
+const Auth: React.FC<AuthProps> = ({ onClose }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isModalOpen, setIsModalOpen] = useState(true); // Модальне вікно відкривається за замовчуванням
-    const modalRef = useRef<HTMLDivElement>(null);
 
     const handleLogin = (event: React.FormEvent) => {
         event.preventDefault();
@@ -14,43 +16,15 @@ const Auth: React.FC = () => {
         console.log('Password:', password);
     };
 
-    const handleClickOutside = (event: MouseEvent) => {
-        if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-            setIsModalOpen(false);
-        }
-    };
-
-    const handleEscKey = (event: KeyboardEvent) => {
-        if (event.key === 'Escape') {
-            setIsModalOpen(false);
-        }
-    };
-
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside);
-        document.addEventListener('keydown', handleEscKey);
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-            document.removeEventListener('keydown', handleEscKey);
-        };
-    }, []);
-
-    // Не рендерити компонент, якщо модальне вікно закрите
-    if (!isModalOpen) {
-        return null;
-    }
-
     return (
-        <div
-            className={styles.modalBackdrop}
-            onClick={() => setIsModalOpen(false)} // Закрити модальне вікно при натисканні на фон
-        >
-            <div
-                className={styles.modalContainer}
-                ref={modalRef}
-                onClick={(e) => e.stopPropagation()} // Зупиняємо події кліка на модальному вікні
-            >
+        <div className={styles.modalBackdrop}>
+            <div className={styles.modalContainer}>
+                <button
+                    className={styles.closeButton}
+                    onClick={onClose} // Викликаємо функцію закриття при натисканні
+                >
+                    &times; {/* HTML-символ для "X" */}
+                </button>
                 <h2 className={styles.header}>Sign in</h2>
                 <form onSubmit={handleLogin}>
                     <div className={styles.formGroup}>

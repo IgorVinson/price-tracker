@@ -5,25 +5,23 @@ import Image from "next/image";
 import Auth from './Auth/Auth';
 
 const navIcons = [
-    {src: '/assets/icons/search.svg', alt: 'search'},
-    {src: '/assets/icons/black-heart.svg', alt: 'heart'},
-    {src: '/assets/icons/user.svg', alt: 'user'},
+    { src: '/assets/icons/search.svg', alt: 'search' },
+    { src: '/assets/icons/black-heart.svg', alt: 'heart' },
+    { src: '/assets/icons/user.svg', alt: 'user' },
 ]
 
 function Navbar() {
+    const [isModalOpen, setModalOpen] = useState(false);
 
-        const [isModalOpen, setModalOpen] = useState(false);
-    
-        const handleIconClick = (alt: string) => {
-            if (alt === 'user') {
-                setModalOpen(true);
-            }
-        };
-    
-        const handleCloseModal = () => {
-            setModalOpen(false);
-        };
+    const handleIconClick = (alt: string) => {
+        if (alt === 'user') {
+            setModalOpen(true);
+        }
+    };
 
+    const handleCloseModal = () => {
+        setModalOpen(false);
+    };
 
     return (
         <header className="w-full">
@@ -35,7 +33,6 @@ function Navbar() {
                         height={27}
                         alt="logo"
                     />
-
                     <p className="nav-logo">
                         Price<span className='text-primary'>Tracker</span>
                     </p>
@@ -49,38 +46,14 @@ function Navbar() {
                             alt={icon.alt}
                             width={28}
                             height={28}
-                            className="object-contain cursor-pointer" 
+                            className="object-contain cursor-pointer"
                             onClick={() => handleIconClick(icon.alt)}
                         />
                     ))}
                 </div>
             </nav>
             {isModalOpen && (
-                <div
-                    style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
-                    onClick={handleCloseModal}
-                >
-                    <div
-                        style={{
-                            backgroundColor: 'white',
-                            borderRadius: '8px',
-                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-                        }}
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <Auth /> 
-                    </div>
-                </div>
+                <Auth onClose={handleCloseModal} />
             )}
         </header>
     );

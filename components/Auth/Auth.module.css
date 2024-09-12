@@ -18,7 +18,7 @@
 .modalContainer {
     width: 50%;
     max-width: 500px; /* Можна налаштувати за потребою */
-    height: 60%;
+    height: 70%;
     max-height: 600px; /* Можна налаштувати за потребою */
     background: #ffffff;
     border-radius: 8px;
@@ -26,7 +26,21 @@
     padding: 20px;
     box-sizing: border-box;
     z-index: 1000;
+    position: relative; /* Для позиціонування кнопки закриття */
     overflow: auto;
+}
+
+/* Кнопка закриття */
+.closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+    z-index: 1001; /* Переконатися, що кнопка завжди поверх модального вікна */
 }
 
 /* Додаткові стилі для модального вікна */
