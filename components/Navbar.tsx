@@ -1,6 +1,8 @@
-import React from 'react';
+"use client";
+import React, { useState } from 'react';
 import Link from "next/link";
 import Image from "next/image";
+import Auth from './Auth';
 
 const navIcons = [
     {src: '/assets/icons/search.svg', alt: 'search'},
@@ -9,6 +11,20 @@ const navIcons = [
 ]
 
 function Navbar() {
+
+        const [isModalOpen, setModalOpen] = useState(false);
+    
+        const handleIconClick = (alt: string) => {
+            if (alt === 'user') {
+                setModalOpen(true);
+            }
+        };
+    
+        const handleCloseModal = () => {
+            setModalOpen(false);
+        };
+
+
     return (
         <header className="w-full">
             <nav className="nav">
@@ -33,11 +49,39 @@ function Navbar() {
                             alt={icon.alt}
                             width={28}
                             height={28}
-                            className="object-contain"
+                            className="object-contain cursor-pointer" 
+                            onClick={() => handleIconClick(icon.alt)}
                         />
                     ))}
                 </div>
             </nav>
+            {isModalOpen && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                    onClick={handleCloseModal}
+                >
+                    <div
+                        style={{
+                            backgroundColor: 'white',
+                            borderRadius: '8px',
+                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <Auth /> 
+                    </div>
+                </div>
+            )}
         </header>
     );
 }
