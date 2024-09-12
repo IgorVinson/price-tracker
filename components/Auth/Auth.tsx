@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './Auth.module.css'; // Імпорт CSS-модуля
 
 const Auth: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(true); // Модальне вікно відкривається за замовчуванням
+    const modalRef = useRef<HTMLDivElement>(null);
 
     const handleLogin = (event: React.FormEvent) => {
         event.preventDefault();
@@ -12,10 +14,43 @@ const Auth: React.FC = () => {
         console.log('Password:', password);
     };
 
+    const handleClickOutside = (event: MouseEvent) => {
+        if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+            setIsModalOpen(false);
+        }
+    };
+
+    const handleEscKey = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+            setIsModalOpen(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('keydown', handleEscKey);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('keydown', handleEscKey);
+        };
+    }, []);
+
+    // Не рендерити компонент, якщо модальне вікно закрите
+    if (!isModalOpen) {
+        return null;
+    }
+
     return (
-        <div>
-            <div className={styles.modalBackdrop} />
-            <div className={styles.modalContainer}>
+        <div
+            className={styles.modalBackdrop}
+            onClick={() => setIsModalOpen(false)} // Закрити модальне вікно при натисканні на фон
+        >
+            <div
+                className={styles.modalContainer}
+                ref={modalRef}
+                onClick={(e) => e.stopPropagation()} // Зупиняємо події кліка на модальному вікні
+            >
                 <h2 className={styles.header}>Sign in</h2>
                 <form onSubmit={handleLogin}>
                     <div className={styles.formGroup}>
