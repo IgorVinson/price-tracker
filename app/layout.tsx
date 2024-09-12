@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Inter, Space_Grotesk } from "next/font/google";
-import Navbar from "@/components/Navbar";
 import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
+import Navbar from "../components/Navbar";
+import SessionProvider from "../lib/SesionProvider";
+import { getServerSession } from "next-auth";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -19,19 +21,22 @@ export const metadata: Metadata = {
     description: "Track the price of products on Amazon",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const session = await getServerSession();
     return (
         <html lang="en">
             <body>
                 <Theme>
-                    <main className="max-w-10xl mx-auto">
-                        <Navbar />
-                        {children}
-                    </main>
+                    <SessionProvider session={session}>
+                        <main className="max-w-10xl mx-auto">
+                            <Navbar />
+                            {children}
+                        </main>
+                    </SessionProvider>
                 </Theme>
             </body>
         </html>

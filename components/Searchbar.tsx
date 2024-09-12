@@ -1,14 +1,17 @@
 "use client";
 import React from "react";
-import { scrapeAndStoreProduct } from "@/lib/action";
-import useProductStore from "@/lib/store";
-import DialogWindow from "@/components/DialogWindow";
-import Spinner from "@/components/Spinner";
+import { scrapeAndStoreProduct } from "../lib/action";
+import useProductStore from "../lib/store";
+import DialogWindow from "../components/DialogWindow";
+import Spinner from "../components/Spinner";
+import { useSession } from "next-auth/react";
 
 function Searchbar() {
     const [inputValue, setInputValue] = React.useState("");
     const [isOpen, setIsOpen] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
+    const session = useSession();
+    console.log(session);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();

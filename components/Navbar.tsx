@@ -1,12 +1,13 @@
-import React from 'react';
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import AuthButton from "./AuthButton";
 
 const navIcons = [
-    {src: '/assets/icons/search.svg', alt: 'search'},
-    {src: '/assets/icons/black-heart.svg', alt: 'heart'},
-    {src: '/assets/icons/user.svg', alt: 'user'},
-]
+    { src: "/assets/icons/search.svg", alt: "search" },
+    { src: "/assets/icons/black-heart.svg", alt: "heart" },
+    { src: "/assets/icons/user.svg", alt: "user" },
+];
 
 function Navbar() {
     return (
@@ -21,11 +22,12 @@ function Navbar() {
                     />
 
                     <p className="nav-logo">
-                        Price<span className='text-primary'>Tracker</span>
+                        Price<span className="text-primary">Tracker</span>
                     </p>
                 </Link>
 
                 <div className="flex items-center gap-5">
+                    <AuthButton />
                     {navIcons.map((icon) => (
                         <Image
                             key={icon.alt}

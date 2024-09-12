@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Table } from "@radix-ui/themes";
-import useProductStore from "@/lib/store";
+import useProductStore from "../lib/store";
 
 export default function TableComponent() {
     const savedProducts = useProductStore((state) => state.savedProducts); // Get saved products from Zustand store

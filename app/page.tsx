@@ -1,6 +1,9 @@
 import Image from "next/image";
-import Searchbar from "@/components/Searchbar";
-import Table from "@/components/Table";
+import Searchbar from "../components/Searchbar";
+import Table from "../components/Table";
+import AuthButton from "../components/AuthButton";
+import SessionProvider from "../lib/SesionProvider";
+import { getServerSession } from "next-auth";
 
 const Home = async () => {
     return (
