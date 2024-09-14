@@ -4,8 +4,9 @@ import { Inter, Space_Grotesk } from "next/font/google";
 import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
 import Navbar from "../components/Navbar";
-import SessionProvider from "../lib/SesionProvider";
+import SessionProvider from "../libs/SesionProvider";
 import { getServerSession } from "next-auth";
+import { Providers } from "./providers";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -32,10 +33,12 @@ export default async function RootLayout({
             <body>
                 <Theme>
                     <SessionProvider session={session}>
-                        <main className="max-w-10xl mx-auto">
-                            <Navbar />
-                            {children}
-                        </main>
+                        <Providers>
+                            <main className="max-w-10xl mx-auto">
+                                <Navbar />
+                                {children}
+                            </main>
+                        </Providers>
                     </SessionProvider>
                 </Theme>
             </body>

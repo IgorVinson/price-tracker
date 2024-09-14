@@ -28,7 +28,6 @@ export default function AuthButton() {
     }
     return (
         <>
-            Not signed in <br />
             <button
                 className="flex items-center justify-center bg-white border border-gray-300 rounded-lg shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 py-2 px-4 transition-all"
                 onClick={handleSignIn}

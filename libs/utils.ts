@@ -1,3 +1,4 @@
+// @ts-ignore
 import { PriceHistoryItem, Product } from "@/types";
 
 const Notification = {

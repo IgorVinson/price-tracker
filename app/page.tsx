@@ -1,9 +1,6 @@
 import Image from "next/image";
 import Searchbar from "../components/Searchbar";
 import Table from "../components/Table";
-import AuthButton from "../components/AuthButton";
-import SessionProvider from "../lib/SesionProvider";
-import { getServerSession } from "next-auth";
 
 const Home = async () => {
     return (
@@ -36,10 +33,7 @@ const Home = async () => {
 
                     {/*<HeroCarousel />*/}
                 </div>
-                <div className="mt-8 bg-gray-100 rounded-[20px] p-8">
-                    <h2 className="section-text text-center">
-                        List of yours saved products
-                    </h2>
+                <div className="mt-8">
                     <Table />
                 </div>
             </section>

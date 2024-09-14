@@ -3,7 +3,6 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
 import { extractCurrency, extractDescription, extractPrice } from "../utils";
-import useProductStore from "@/lib/store";
 
 export async function scrapeAmazonProduct(url: string) {
     if (!url) return;

@@ -1,55 +1,123 @@
 "use client";
-import React from "react";
-import { Table } from "@radix-ui/themes";
-import useProductStore from "../lib/store";
+import React, { useEffect } from "react";
+import {
+    Table,
+    Thead,
+    Tbody,
+    Tr,
+    Th,
+    Td,
+    TableCaption,
+    TableContainer,
+    Spinner,
+    Box,
+    Text,
+    useColorModeValue,
+} from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
+import useProductStore from "../libs/store";
 
 export default function TableComponent() {
-    const savedProducts = useProductStore((state) => state.savedProducts); // Get saved products from Zustand store
+    const { products, fetchProducts, isLoading, error } = useProductStore();
+    const { data: session } = useSession();
+
+    const borderColor = useColorModeValue("gray.300", "gray.600");
+    const hoverBg = useColorModeValue("gray.200", "gray.600");
+
+    // Fetch products on component mount
+    useEffect(() => {
+        fetchProducts();
+    }, [fetchProducts]);
 
     const shortenTitle = (title: string) => {
-        if (title.length > 100) {
-            return title.substring(0, 50) + "...";
-        }
-        return title;
+        return title.length > 100 ? `${title.substring(0, 50)}...` : title;
     };
 
-    return (
-        <Table.Root>
-            <Table.Header>
-                <Table.Row>
-                    <Table.ColumnHeaderCell>
-                        Product Image
-                    </Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell>
-                        Product Title
-                    </Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell>
-                        Current Price
-                    </Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell>
-                        Original Price
-                    </Table.ColumnHeaderCell>
-                </Table.Row>
-            </Table.Header>
+    if (isLoading) {
+        return (
+            <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                minHeight="200px"
+            >
+                <Spinner size="lg" />
+            </Box>
+        );
+    }
 
-            <Table.Body>
-                {savedProducts.map((product, index) => (
-                    <Table.Row key={index}>
-                        <Table.Cell>
-                            <img
-                                src={product.image}
-                                alt={product.title}
-                                className="w-24 h-24 object-contain rounded"
-                            />
-                        </Table.Cell>
-                        <Table.RowHeaderCell>
-                            {shortenTitle(product.title)}
-                        </Table.RowHeaderCell>
-                        <Table.Cell>{product.currentPrice} $</Table.Cell>
-                        <Table.Cell>{product.originalPrice} $</Table.Cell>
-                    </Table.Row>
-                ))}
-            </Table.Body>
-        </Table.Root>
+    if (error) {
+        return (
+            <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                minHeight="200px"
+            >
+                <Text color="red.500">Error loading products: {error}</Text>
+            </Box>
+        );
+    }
+
+    return (
+        <TableContainer
+            maxW="100%"
+            overflowX="auto"
+            p={4}
+            borderRadius="lg"
+            borderWidth="1px"
+            borderColor={borderColor}
+        >
+            <Table variant="simple" size="md">
+                <TableCaption
+                    placement="top"
+                    fontSize={["md", "2xl"]}
+                    textAlign="left"
+                    width={"100%"}
+                >
+                    Your products
+                </TableCaption>
+                <Thead>
+                    <Tr>
+                        <Th>Product Image</Th>
+                        <Th>Product Title</Th>
+                        <Th isNumeric>Current Price</Th>
+                        <Th isNumeric>Original Price</Th>
+                    </Tr>
+                </Thead>
+                <Tbody>
+                    {session &&
+                        products.map((product, index) => (
+                            <Tr
+                                key={index}
+                                _hover={{
+                                    backgroundColor: hoverBg,
+                                }}
+                            >
+                                <Td>
+                                    <Box
+                                        boxSize="70px"
+                                        overflow="hidden"
+                                        rounded="md"
+                                    >
+                                        <img
+                                            src={product.image}
+                                            alt={product.title}
+                                            className="object-contain"
+                                            style={{
+                                                width: "100%",
+                                                height: "100%",
+                                            }}
+                                        />
+                                    </Box>
+                                </Td>
+                                <Td>{shortenTitle(product.title)}</Td>
+                                <Td isNumeric>{product.currentPrice} $</Td>
+                                <Td isNumeric>{product.originalPrice} $</Td>
+                            </Tr>
+                        ))}
+                </Tbody>
+            </Table>
+        </TableContainer>
     );
 }

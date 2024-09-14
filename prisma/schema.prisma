@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client-js" // Заміни "index-client-js" на "prisma-client-js"
 }
 
 datasource db {
@@ -24,13 +24,13 @@ model User {
 
 model Product {
   id            Int      @id @default(autoincrement())
-  url           String
+  url           String   @unique // Позначаємо поле url як унікальне
   currency      String
   image         String
   title         String
   currentPrice  Float
   originalPrice Float
-  priceHistory  Json // Можна використати тип JSON для масиву
+  priceHistory  Json
   highestPrice  Float
   lowestPrice   Float
   averagePrice  Float
